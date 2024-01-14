@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class App extends JFrame {
 	static int key = 75;
+	static int private_key = 28;
 	static byte[] encrept_const = { 75, 76, 82 };
 
 	public static void main(String[] args) {
@@ -34,6 +35,7 @@ public class App extends JFrame {
 		try {
 
 			bis.write(encrept_const);
+			bis.write(key^28);
 			for (int i = 0; i < data.length; i++) {
 				byte b = (byte) (data[i] ^ key);
 				bis.write(b);
@@ -50,13 +52,15 @@ public class App extends JFrame {
 	}
 
 	public static byte[] decrept_file(int key, byte[] data) {
-		byte[] encrypted_data = Arrays.copyOfRange(data, encrept_const.length, data.length);
+		
+			
+		byte[] encrypted_data = Arrays.copyOfRange(data, encrept_const.length+1, data.length);
 		for (int i = 0; i < encrypted_data.length; i++) {
 			encrypted_data[i] = (byte) (encrypted_data[i] ^ key);
 
 		}
 		return encrypted_data;
-
+	
 	}
 
 	public static byte[] read_file(File file) {
@@ -115,6 +119,10 @@ JOptionPane.showMessageDialog(null, "File is alredy Encrepted", "Warning", JOpti
 		File file = jf.getSelectedFile();
 		System.out.println("Reading File...");
 		byte[] data = read_file(file);
+		byte check = data[3];
+		if((check^28)!=key)
+		{JOptionPane.showMessageDialog(null, "Enter Correct Password","Warning",JOptionPane.WARNING_MESSAGE);
+			return ;}
 		if (is_Encrepted(data)) {
 			System.out.println("Decrepting File...");
 			byte[] decrepted_data = decrept_file(key, data);
