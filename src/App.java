@@ -115,6 +115,7 @@ JOptionPane.showMessageDialog(null, "File is alredy Encrepted", "Warning", JOpti
 	}
 	public static void button_clicked_decrept(int key) {
 		JFileChooser jf = new JFileChooser();
+	
 		jf.showOpenDialog(null);
 		File file = jf.getSelectedFile();
 		System.out.println("Reading File...");
